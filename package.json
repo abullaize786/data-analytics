@@ -1,0 +1,19 @@
+{
+  "name": "tn-smart-data",
+  "version": "1.0.0",
+  "description": "TN Smart Data - Tamil Nadu Smart City Analytics Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test_api.js"
+  },
+  "keywords": ["tamil-nadu", "smart-city", "analytics"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TN SMART DATA - Tamil Nadu Smart City Analytics</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Local stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+
+
+
+</head>
+<body>
+
+  <!-- ===== LOGIN PAGE OVERLAY ===== -->
+  <div class="login-overlay" id="loginOverlay">
+    <!-- Animated background particles -->
+    <div class="login-bg-anim">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="login-card" id="loginCard">
+      <!-- Language Toggle -->
+      <div class="lang-toggle-row">
+        <button class="lang-btn active" id="langTamil" onclick="setLang('ta')">தமிழ்</button>
+        <button class="lang-btn" id="langEnglish" onclick="setLang('en')">English</button>
+      </div>
+
+      <!-- Hero Banner -->
+      <div class="login-hero-banner">
+        <img src="temple_banner.png" alt="TN Smart Data Temple" class="temple-img" onerror="this.style.display='none'">
+        <div class="login-hero-overlay">
+          <div class="login-logo-mark">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="rgba(255,255,255,0.2)"/>
+              <path d="M16 6L20 12H26L21 17L23 24L16 20L9 24L11 17L6 12H12L16 6Z" fill="white"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Greeting -->
+      <div class="login-greeting">
+        <h1 class="login-title-ta" data-lang="ta">வணக்கம்!</h1>
+        <p class="login-subtitle-ta" data-lang="ta">Vanakkam!</p>
+        <p class="login-welcome" data-lang-key="welcome">Welcome to TN Smart Data</p>
+      </div>
+
+      <!-- Login Form -->
+      <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+        <!-- Mobile Number -->
+        <div class="login-input-group">
+          <div class="login-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8 8.09a16 16 0 0 0 6 6l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <input type="tel" id="loginMobile" class="login-input" placeholder="மொபைல் எண் / Mobile Number" maxlength="10" required>
+        </div>
+
+        <!-- Password -->
+        <div class="login-input-group">
+          <div class="login-input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <input type="password" id="loginPassword" class="login-input" placeholder="கடவுச்சொல் / Password" required>
+          <button type="button" class="login-eye-btn" onclick="toggleLoginPassword(this)" tabindex="-1">
+            <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="login-forgot-row">
+          <a href="#" class="forgot-link" data-lang-key="forgot">Forgot Password?</a>
+        </div>
+
+        <!-- Error Message -->
+        <div class="login-error" id="loginError" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="loginErrorMsg">Invalid credentials</span>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="login-btn" id="loginSubmitBtn">
+          <span class="login-btn-text" data-lang-key="loginBtn">Login</span>
+          <div class="login-btn-spinner" id="loginSpinner" style="display:none;">
+            <div class="spinner-ring"></div>
+          </div>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="login-divider">
+        <span data-lang-key="orContinue">or continue with</span>
+      </div>
+
+      <!-- Social Buttons -->
+      <div class="login-social-row">
+        <button class="social-btn google-btn" title="Continue with Google" onclick="socialLogin('google')">
+          <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-8.9 20-20 0-1.3-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16.1 19 13 24 13c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.1 0-9.5-2.9-11.3-7.1l-6.6 4.8C9.7 39.6 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-1 2.7-2.8 5-5.2 6.6l6.2 5.2C40.1 36.4 44 30.7 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+        </button>
+        <button class="social-btn whatsapp-btn" title="Continue with WhatsApp" onclick="socialLogin('whatsapp')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </button>
+        <button class="social-btn email-btn" title="Continue with Email" onclick="socialLogin('email')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </button>
+      </div>
+
+      <!-- Register Link -->
+      <div class="login-register-row">
+        <span data-lang-key="newUser">New User?</span>
+        <a href="#" class="register-link" data-lang-key="registerHere">Register Here</a>
+      </div>
+    </div>
+  </div>
+  <!-- ===== END LOGIN PAGE ===== -->
+
+  <!-- App Wrapper -->
+  <div class="app-container" id="appContainer" style="display:none;">
+    
+    <!-- Sidebar Navigation (Desktop only) -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <i data-lucide="database"></i>
+        </div>
+        <span class="brand-name">TN Smart Data</span>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-tab="home">
+          <i data-lucide="home"></i>
+          <span>Home</span>
+        </button>
+        <button class="nav-item" data-tab="districts">
+          <i data-lucide="map-pin"></i>
+          <span>Districts</span>
+        </button>
+        <button class="nav-item" data-tab="predict">
+          <i data-lucide="cpu"></i>
+          <span>AI Predict</span>
+        </button>
+        <button class="nav-item" data-tab="reports">
+          <i data-lucide="file-text"></i>
+          <span>Reports</span>
+        </button>
+        
+        <button class="nav-item" data-tab="profile">
+          <i data-lucide="user"></i>
+          <span>Profile</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-badge-avatar" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#00c6ae);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;">TN</div>
+          <div class="user-meta">
+            <span class="user-greeting">Vanakkam,</span>
+            <span class="user-name">TN Smart Data</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Header -->
+      <header class="header">
+        <button class="menu-btn mobile-only" id="menuToggleBtn" aria-label="Toggle Sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <h1 class="header-title">TN SMART DATA</h1>
+        <div class="header-actions">
+
+          <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+            <i data-lucide="sun" class="sun-icon"></i>
+            <i data-lucide="moon" class="moon-icon"></i>
+          </button>
+          <div class="notification-btn-container">
+            <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
+              <i data-lucide="bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <!-- Dropdown for notifications -->
+            <div class="notification-dropdown" id="notificationDropdown">
+              <h3>Notifications</h3>
+              <div class="notification-list">
+                <div class="notification-item unread">
+                  <div class="noti-icon alert"><i data-lucide="alert-triangle"></i></div>
+                  <div class="noti-text">
+                    <p>Water level at Siruvani reservoir is at 92%. Alert level approaching.</p>
+                    <span>2 mins ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="noti-icon info"><i data-lucide="info"></i></div>
+                  <div class="noti-text">
+                    <p>Rainfall prediction model updated for Chennai region.</p>
+                    <span>3 hours ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="noti-icon success"><i data-lucide="check-circle"></i></div>
+                  <div class="noti-text">
+                    <p>Monthly Smart City report generated successfully.</p>
+                    <span>1 day ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB: Home (Dashboard) -->
+      <section class="tab-pane active" id="tab-home">
+        
+        <!-- Welcome Card & District Selector -->
+        <div class="dashboard-hero">
+          <div class="welcome-section">
+            <div class="welcome-user">
+              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80&q=80" alt="User Profile" class="avatar mobile-only">
+              <div>
+                <p class="greeting-lbl">Vanakkam,</p>
+                <h2 class="greeting-user" id="dashboardGreetName">User</h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="selector-container">
+            <label for="districtSelect" class="selector-label">Select District</label>
+            <div class="custom-select-wrapper">
+              <select id="districtSelect" class="district-select">
+                <option value="ariyalur">Ariyalur</option>
+                <option value="chengalpattu">Chengalpattu</option>
+                <option value="chennai">Chennai</option>
+                <option value="coimbatore" selected>Coimbatore</option>
+                <option value="cuddalore">Cuddalore</option>
+                <option value="dharmapuri">Dharmapuri</option>
+                <option value="dindigul">Dindigul</option>
+                <option value="erode">Erode</option>
+                <option value="kallakurichi">Kallakurichi</option>
+                <option value="kanchipuram">Kanchipuram</option>
+                <option value="kanyakumari">Kanyakumari</option>
+                <option value="karur">Karur</option>
+                <option value="krishnagiri">Krishnagiri</option>
+                <option value="madurai">Madurai</option>
+                <option value="mayiladuthurai">Mayiladuthurai</option>
+                <option value="nagapattinam">Nagapattinam</option>
+                <option value="namakkal">Namakkal</option>
+                <option value="nilgiris">Nilgiris</option>
+                <option value="perambalur">Perambalur</option>
+                <option value="pudukkottai">Pudukkottai</option>
+                <option value="ramanathapuram">Ramanathapuram</option>
+                <option value="ranipet">Ranipet</option>
+                <option value="salem">Salem</option>
+                <option value="sivaganga">Sivaganga</option>
+                <option value="tenkasi">Tenkasi</option>
+                <option value="thanjavur">Thanjavur</option>
+                <option value="theni">Theni</option>
+                <option value="thoothukudi">Thoothukudi</option>
+                <option value="tiruchirappalli">Tiruchirappalli</option>
+                <option value="tirunelveli">Tirunelveli</option>
+                <option value="tirupattur">Tirupattur</option>
+                <option value="tiruppur">Tiruppur</option>
+                <option value="tiruvallur">Tiruvallur</option>
+                <option value="tiruvannamalai">Tiruvannamalai</option>
+                <option value="tiruvarur">Tiruvarur</option>
+                <option value="vellore">Vellore</option>
+                <option value="viluppuram">Viluppuram</option>
+                <option value="virudhunagar">Virudhunagar</option>
+              </select>
+              <i data-lucide="chevron-down" class="select-chevron"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Grid -->
+        <section class="category-section">
+          <h3 class="section-title">Categories</h3>
+          <div class="category-grid">
+            <button class="category-card active" data-category="rainfall">
+              <div class="cat-icon-container rain-bg">
+                <i data-lucide="cloud-rain"></i>
+              </div>
+              <span class="cat-label">Rainfall Dashboard</span>
+            </button>
+
+            <button class="category-card" data-category="agriculture">
+              <div class="cat-icon-container agri-bg">
+                <i data-lucide="sprout"></i>
+              </div>
+              <span class="cat-label">Agriculture Market</span>
+            </button>
+
+            <button class="category-card" data-category="traffic">
+              <div class="cat-icon-container" style="background: rgba(14, 165, 233, 0.15); color: #0ea5e9;">
+                <i data-lucide="car"></i>
+              </div>
+              <span class="cat-label">Traffic Analysis</span>
+            </button>
+
+            <button class="category-card" data-category="education">
+              <div class="cat-icon-container edu-bg">
+                <i data-lucide="graduation-cap"></i>
+              </div>
+              <span class="cat-label">Education</span>
+            </button>
+
+            <button class="category-card" data-category="temple">
+              <div class="cat-icon-container" style="background: rgba(233, 30, 99, 0.15); color: #E91E63;">
+                <i data-lucide="users"></i>
+              </div>
+              <span class="cat-label">Temple Crowd Analysis</span>
+            </button>
+
+            <button class="category-card" data-category="jallikattu">
+              <div class="cat-icon-container" style="background: rgba(255, 193, 7, 0.15); color: #FFC107;">
+                <i data-lucide="target"></i>
+              </div>
+              <span class="cat-label">Jallikattu Dashboard</span>
+            </button>
+
+            <button class="category-card" data-category="disaster">
+              <div class="cat-icon-container" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">
+                <i data-lucide="alert-triangle"></i>
+              </div>
+              <span class="cat-label">Disaster Alert</span>
+            </button>
+
+            <button class="category-card" data-category="population">
+              <div class="cat-icon-container pop-bg">
+                <i data-lucide="map"></i>
+              </div>
+              <span class="cat-label">Map View Population</span>
+            </button>
+          </div>
+        </section>
+
+        
+
+      </section>
+
+      <!-- TAB: Rainfall Overview -->
+      <section class="tab-pane" id="tab-rainfall">
+        <div class="district-analytics-view" style="background: #f8fafc; min-height: 100vh;">
+          <div class="da-header" style="background: white;">
+            <button class="icon-btn back-btn" onclick="switchTab('home')"><i data-lucide="arrow-left"></i></button>
+            <h2 class="da-title">Rainfall Overview</h2>
+            <div style="position: relative; display: inline-block;">
+              <input type="date" id="rainfallDatePicker" style="position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer;" title="Select Date">
+              <button class="icon-btn share-btn"><i data-lucide="calendar"></i></button>
+            </div>
+          </div>
+
+          <div style="padding: 1rem;">
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+              <div class="custom-select-wrapper" style="flex: 1;">
+                <select id="rainfallDistrictSelect" class="district-select" style="width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; background: white;">
+                  <option value="ariyalur">Ariyalur</option>
+                  <option value="chengalpattu">Chengalpattu</option>
+                  <option value="chennai">Chennai</option>
+                  <option value="coimbatore">Coimbatore</option>
+                  <option value="cuddalore">Cuddalore</option>
+                  <option value="dharmapuri">Dharmapuri</option>
+                  <option value="dindigul">Dindigul</option>
+                  <option value="erode">Erode</option>
+                  <option value="kallakurichi">Kallakurichi</option>
+                  <option value="kanchipuram">Kanchipuram</option>
+                  <option value="kanyakumari">Kanyakumari</option>
+                  <option value="karur">Karur</option>
+                  <option value="krishnagiri">Krishnagiri</option>
+                  <option value="madurai">Madurai</option>
+                  <option value="mayiladuthurai">Mayiladuthurai</option>
+                  <option value="nagapattinam">Nagapattinam</option>
+                  <option value="namakkal">Namakkal</option>
+                  <option value="nilgiris">Nilgiris</option>
+                  <option value="perambalur">Perambalur</option>
+                  <option value="pudukkottai">Pudukkottai</option>
+                  <option value="ramanathapuram">Ramanathapuram</option>
+                  <option value="ranipet">Ranipet</option>
+                  <option value="salem">Salem</option>
+                  <option value="sivaganga">Sivaganga</option>
+                  <option value="tenkasi">Tenkasi</option>
+                  <option value="thanjavur">Thanjavur</option>
+                  <option value="theni">Theni</option>
+                  <option value="thoothukudi">Thoothukudi</option>
+                  <option value="tiruchirappalli">Tiruchirappalli</option>
+                  <option value="tirunelveli">Tirunelveli</option>
+                  <option value="tirupathur">Tirupathur</option>
+                  <option value="tiruppur">Tiruppur</option>
+                  <option value="tiruvallur">Tiruvallur</option>
+                  <option value="tiruvannamalai">Tiruvannamalai</option>
+                  <option value="tiruvarur">Tiruvarur</option>
+                  <option value="vellore">Vellore</option>
+                  <option value="viluppuram">Viluppuram</option>
+                  <option value="virudhunagar">Virudhunagar</option>
+                </select>
+                <i data-lucide="chevron-down" class="select-chevron"></i>
+              </div>
+              <div class="custom-select-wrapper" style="width: 110px;">
+                <select id="rainfallYearSelect" class="district-select" style="width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; background: white;">
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024" selected>2024</option>
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                  <option value="2019">2019</option>
+                  <option value="2018">2018</option>
+                </select>
+                <i data-lucide="chevron-down" class="select-chevron"></i>
+              </div>
+            </div>
+
+            <div style="background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">Current Rainfall</p>
+                <h2 style="font-size: 2.2rem; color: #0f172a; margin: 0; display: flex; align-items: baseline; gap: 0.3rem;">
+                  <span id="rainfallCurrentVal">128.4</span>
+                  <span style="font-size: 1rem; font-weight: 600;">mm</span>
+                </h2>
+                <p style="color: #64748b; font-size: 0.85rem; margin-top: 0.2rem;">This Month</p>
+                <div style="margin-top: 0.8rem; display: inline-flex; align-items: center; gap: 0.3rem; color: #10b981; background: #d1fae5; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600;">
+                  <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i> <span id="rainfallTrendVal">12% from last month</span>
+                </div>
+              </div>
+              <div style="font-size: 3.5rem;">
+                <div style="background: #e0f2fe; padding: 1rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="cloud-rain" style="width: 40px; height: 40px; color: #0ea5e9;"></i>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <h3 style="color: #0f172a; font-size: 1rem; margin-bottom: 1rem; font-weight: 600;">Monthly Rainfall Comparison (mm)</h3>
+              <div style="height: 180px; position: relative;">
+                <canvas id="rainfallBarChart"></canvas>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.8rem;">
+              <div style="background: white; border-radius: 16px; padding: 1.2rem; flex: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.4rem; font-weight: 500;">Max Rainfall</p>
+                <h3 style="font-size: 1.4rem; color: #0f172a; margin: 0; display: flex; align-items: baseline; gap: 0.2rem;">
+                  <span id="rainfallMaxVal">215.6</span>
+                  <span style="font-size: 0.85rem; font-weight: 600;">mm</span>
+                </h3>
+                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.2rem;">Nov 2023</p>
+              </div>
+              <div style="background: white; border-radius: 16px; padding: 1.2rem; flex: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.4rem; font-weight: 500;">Avg Rainfall</p>
+                <h3 style="font-size: 1.4rem; color: #0f172a; margin: 0; display: flex; align-items: baseline; gap: 0.2rem;">
+                  <span id="rainfallAvgVal">98.7</span>
+                  <span style="font-size: 0.85rem; font-weight: 600;">mm</span>
+                </h3>
+                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.2rem;">Per Month</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Traffic Analytics -->
+      <section class="tab-pane" id="tab-traffic">
+        <div style="background: #f8fafc; min-height: 100vh; display: flex; flex-direction: column;">
+          <!-- Header -->
+          <div style="background: white; padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10;">
+            <button onclick="switchTab('home')" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: #0f172a;">
+              <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+            </button>
+            <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: #064e3b; margin: 0;">Traffic Analytics</h2>
+            <button style="background: none; border: none; cursor: pointer; color: #0f172a;">
+              <i data-lucide="more-vertical" style="width: 20px; height: 20px;"></i>
+            </button>
+          </div>
+
+          <!-- Content Body -->
+          <div style="padding: 1rem 1.2rem; flex: 1;">
+            <!-- District Selector -->
+            <div style="margin-bottom: 1.2rem;">
+              <div style="position: relative; border: 1px solid #e2e8f0; border-radius: 12px; background: white; padding: 0.8rem 1rem;">
+                <select id="trafficDistrictSelect" style="width: 100%; border: none; background: transparent; font-family: 'Outfit', sans-serif; font-size: 0.95rem; color: #0f172a; font-weight: 600; appearance: none; outline: none; cursor: pointer;">
+                  <option value="chennai">Chennai</option>
+                  <option value="coimbatore">Coimbatore</option>
+                  <option value="madurai">Madurai</option>
+                  <option value="tiruchirappalli">Tiruchirappalli</option>
+                  <option value="salem">Salem</option>
+                </select>
+                <i data-lucide="chevron-down" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #64748b; pointer-events: none;"></i>
+              </div>
+            </div>
+
+            <!-- Live Traffic Status Card -->
+            <div style="background: white; border-radius: 16px; padding: 1.2rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);">
+              <div>
+                <p style="font-family: 'Outfit', sans-serif; font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 0.4rem;">Live Traffic Status</p>
+                <h3 id="trafficStatusText" style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: #d97706; margin: 0 0 0.4rem 0; font-weight: 600;">Moderate</h3>
+                <p style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: #94a3b8; margin: 0;">Updated 2 min ago</p>
+              </div>
+              <div style="position: relative; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(#d97706 65%, #f1f5f9 0);">
+                <div style="width: 55px; height: 55px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                  <span id="trafficScoreText" style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 800; color: #0f172a; line-height: 1;">65</span>
+                  <span style="font-family: 'Outfit', sans-serif; font-size: 0.6rem; color: #64748b; margin-top: 2px;">/100</span>
+                </div>
+              </div>
+            </div>
+            <!-- Route Planner Widget -->
+            <div style="background: white; border-radius: 16px; padding: 1.2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                <h3 style="font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: #064e3b; margin: 0;">Route Planner</h3>
+                <span style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 3px 8px; border-radius: 10px; font-weight: 600;">Live Traffic</span>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.7rem; position: relative;">
+                <div style="position: absolute; left: 12px; top: 22px; bottom: 22px; width: 2px; background: linear-gradient(to bottom, #3b82f6, #ef4444); z-index: 0; border-radius: 2px;"></div>
+                
+                <!-- Starting Point -->
+                <div style="display: flex; gap: 0.8rem; align-items: center; position: relative; z-index: 1;">
+                  <div style="width: 24px; height: 24px; border-radius: 50%; background: #dbeafe; border: 2px solid #3b82f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;"></div>
+                  </div>
+                  <div style="flex: 1; position: relative;">
+                    <input type="text" id="trafficCurrentLocation" placeholder="Choose starting point" style="width: 100%; padding: 0.75rem 2.8rem 0.75rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.88rem; outline: none; background: #f8fafc; color: #0f172a; box-sizing: border-box; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+                    <button onclick="useCurrentLocation()" title="Use GPS Location" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #3b82f6; display: flex; align-items: center; padding: 4px;">
+                      <i data-lucide="crosshair" style="width: 16px; height: 16px;"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Destination -->
+                <div style="display: flex; gap: 0.8rem; align-items: center; position: relative; z-index: 1;">
+                  <div style="width: 24px; height: 24px; border-radius: 50%; background: #fee2e2; border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i data-lucide="map-pin" style="width: 12px; height: 12px; color: #ef4444;"></i>
+                  </div>
+                  <div style="flex: 1;">
+                    <input type="text" id="trafficDropLocation" placeholder="Choose destination" style="width: 100%; padding: 0.75rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.88rem; outline: none; background: #f8fafc; color: #0f172a; box-sizing: border-box; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ef4444'" onblur="this.style.borderColor='#e2e8f0'">
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="calculateTrafficRoute()" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #064e3b, #0f766e); color: white; border: none; padding: 0.85rem; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(6,78,59,0.25); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i data-lucide="navigation" style="width: 18px; height: 18px;"></i> Get Directions
+              </button>
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Agriculture Market -->
+      <section class="tab-pane" id="tab-agriculture">
+        <div style="background: #f0fdf4; min-height: 100vh; display: flex; flex-direction: column;">
+
+          <!-- Header -->
+          <div style="background: white; padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <button onclick="switchTab('home')" style="border: 1px solid #e2e8f0; border-radius: 10px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: white; cursor: pointer;">
+              <i data-lucide="arrow-left" style="width: 18px; height: 18px; color: #0f172a;"></i>
+            </button>
+            <h2 style="font-size: 1.1rem; font-weight: 700; color: #16a34a; margin: 0; font-family: 'Outfit', sans-serif;">Agriculture Market</h2>
+            <button onclick="openAgriSearch()" style="border: 1px solid #e2e8f0; border-radius: 10px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: white; cursor: pointer;">
+              <i data-lucide="search" style="width: 18px; height: 18px; color: #0f172a;"></i>
+            </button>
+          </div>
+
+          <!-- Search Bar (hidden by default) -->
+          <div id="agriSearchBar" style="display: none; background: white; padding: 0.75rem 1rem; border-bottom: 1px solid #f1f5f9;">
+            <div style="position: relative;">
+              <input id="agriSearchInput" type="text" placeholder="Search commodity..." oninput="filterAgriList()" style="width: 100%; border: 1.5px solid #16a34a; border-radius: 10px; padding: 0.65rem 2.5rem 0.65rem 1rem; font-family: 'Outfit', sans-serif; font-size: 0.95rem; color: #0f172a; box-sizing: border-box; outline: none;">
+              <i data-lucide="x" onclick="closeAgriSearch()" style="position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #64748b; cursor: pointer;"></i>
+            </div>
+          </div>
+
+          <div style="padding: 1rem;">
+
+            <!-- District Market Selector -->
+            <div style="position: relative; margin-bottom: 1rem;">
+              <select id="agriMarketSelect" onchange="renderAgriMarket()" style="width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 0.85rem 2.5rem 0.85rem 1rem; background: white; font-size: 0.95rem; font-family: 'Outfit', sans-serif; color: #0f172a; appearance: none; cursor: pointer; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+                <option value="ariyalur">Ariyalur Market</option>
+                <option value="chengalpattu">Chengalpattu Market</option>
+                <option value="chennai">Chennai Market</option>
+                <option value="coimbatore" selected>Coimbatore Market</option>
+                <option value="cuddalore">Cuddalore Market</option>
+                <option value="dharmapuri">Dharmapuri Market</option>
+                <option value="dindigul">Dindigul Market</option>
+                <option value="erode">Erode Market</option>
+                <option value="kallakurichi">Kallakurichi Market</option>
+                <option value="kanchipuram">Kanchipuram Market</option>
+                <option value="kanyakumari">Kanyakumari Market</option>
+                <option value="karur">Karur Market</option>
+                <option value="krishnagiri">Krishnagiri Market</option>
+                <option value="madurai">Madurai Market</option>
+                <option value="mayiladuthurai">Mayiladuthurai Market</option>
+                <option value="nagapattinam">Nagapattinam Market</option>
+                <option value="namakkal">Namakkal Market</option>
+                <option value="nilgiris">Nilgiris Market</option>
+                <option value="perambalur">Perambalur Market</option>
+                <option value="pudukkottai">Pudukkottai Market</option>
+                <option value="ramanathapuram">Ramanathapuram Market</option>
+                <option value="ranipet">Ranipet Market</option>
+                <option value="salem">Salem Market</option>
+                <option value="sivaganga">Sivaganga Market</option>
+                <option value="tenkasi">Tenkasi Market</option>
+                <option value="thanjavur">Thanjavur Market</option>
+                <option value="theni">Theni Market</option>
+                <option value="thoothukudi">Thoothukudi Market</option>
+                <option value="tiruchirappalli">Tiruchirappalli Market</option>
+                <option value="tirunelveli">Tirunelveli Market</option>
+                <option value="tirupathur">Tirupathur Market</option>
+                <option value="tiruppur">Tiruppur Market</option>
+                <option value="tiruvallur">Tiruvallur Market</option>
+                <option value="tiruvannamalai">Tiruvannamalai Market</option>
+                <option value="tiruvarur">Tiruvarur Market</option>
+                <option value="vellore">Vellore Market</option>
+                <option value="viluppuram">Viluppuram Market</option>
+                <option value="virudhunagar">Virudhunagar Market</option>
+              </select>
+              <i data-lucide="chevron-down" style="position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #64748b; pointer-events: none;"></i>
+            </div>
+
+            <!-- Period Tabs -->
+            <div style="display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px; margin-bottom: 1.2rem; box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);">
+              <button onclick="setAgriPeriod('today')" id="agriTab-today" style="flex: 1; padding: 0.6rem; border: none; border-radius: 9px; background: #16a34a; color: white; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">Today</button>
+              <button onclick="setAgriPeriod('week')" id="agriTab-week" style="flex: 1; padding: 0.6rem; border: none; border-radius: 9px; background: transparent; color: #64748b; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">This Week</button>
+              <button onclick="setAgriPeriod('month')" id="agriTab-month" style="flex: 1; padding: 0.6rem; border: none; border-radius: 9px; background: transparent; color: #64748b; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">This Month</button>
+            </div>
+
+            <!-- Vegetables Section -->
+            <div id="agriVegesSection">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                <span style="font-size: 1.2rem;">🥬</span>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin: 0; font-family: 'Outfit', sans-serif;">Vegetables</h3>
+              </div>
+              <div id="agriVegesList" style="display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.2rem;"></div>
+            </div>
+
+            <!-- Fruits Section -->
+            <div id="agriFruitsSection">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                <span style="font-size: 1.2rem;">🍎</span>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin: 0; font-family: 'Outfit', sans-serif;">Fruits</h3>
+              </div>
+              <div id="agriFruitsList" style="display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.2rem;"></div>
+            </div>
+
+            <!-- Search Results (hidden by default) -->
+            <div id="agriSearchResults" style="display: none; flex-direction: column; gap: 0.55rem; margin-bottom: 1.2rem;"></div>
+
+            <!-- View All Report Button -->
+            <button onclick="openAgriReport()" style="width: 100%; margin-top: 0.5rem; padding: 1rem; background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.02em; box-shadow: 0 4px 12px rgba(22,163,74,0.35);">
+              📋 View All Report
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agriculture Full Report Modal -->
+      <div id="agriReportModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; overflow-y:auto;">
+        <div style="background:white; margin:2rem auto; max-width:600px; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+          <div style="background:linear-gradient(135deg,#16a34a,#15803d); padding:1.2rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+            <h2 style="color:white; margin:0; font-family:'Outfit',sans-serif; font-size:1.1rem; font-weight:700;">📋 Full Market Report</h2>
+            <button onclick="closeAgriReport()" style="background:rgba(255,255,255,0.2); border:none; border-radius:8px; width:32px; height:32px; color:white; font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+          </div>
+          <div style="padding:1.2rem;" id="agriReportContent"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Districts (District Analytics View) -->
+
+
+      <section class="tab-pane" id="tab-districts">
+        <div class="district-analytics-view">
+          <!-- Header -->
+          <div class="da-header">
+            <button class="icon-btn back-btn" onclick="document.querySelector('[data-tab=\'home\']').click()"><i data-lucide="arrow-left"></i></button>
+            <h2 class="da-title">District Analytics</h2>
+            <button class="icon-btn share-btn"><i data-lucide="share-2"></i></button>
+          </div>
+
+          <!-- Main Content: Info & Map -->
+          <div class="da-main-content">
+            <div class="da-info-side">
+              <h1 class="da-district-name" id="daNameEn">Coimbatore</h1>
+              <h3 class="da-district-name-ta" id="daNameTa">கோயம்புத்தூர்</h3>
+              
+              <div class="da-metrics-list">
+                <div class="da-metric-item">
+                  <div class="da-metric-icon" style="background:#fff3e0;color:#ff9800"><i data-lucide="users"></i></div>
+                  <div class="da-metric-text">
+                    <span class="da-metric-label">Population</span>
+                    <span class="da-metric-value" id="daValPop">34.45 Lakh</span>
+                  </div>
+                </div>
+                
+                <div class="da-metric-item">
+                  <div class="da-metric-icon" style="background:#fff8e1;color:#ffc107"><i data-lucide="map"></i></div>
+                  <div class="da-metric-text">
+                    <span class="da-metric-label">Area</span>
+                    <span class="da-metric-value" id="daValArea">4,722 sq.km</span>
+                  </div>
+                </div>
+
+                <div class="da-metric-item">
+                  <div class="da-metric-icon" style="background:#e3f2fd;color:#2196f3"><i data-lucide="building"></i></div>
+                  <div class="da-metric-text">
+                    <span class="da-metric-label">Density</span>
+                    <span class="da-metric-value" id="daValDensity">729 /sq.km</span>
+                  </div>
+                </div>
+
+                <div class="da-metric-item">
+                  <div class="da-metric-icon" style="background:#f3e5f5;color:#9c27b0"><i data-lucide="book-open"></i></div>
+                  <div class="da-metric-text">
+                    <span class="da-metric-label">Literacy Rate</span>
+                    <span class="da-metric-value" id="daValLit">81.98%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="da-map-side">
+              <div class="da-map-placeholder">
+                 <img src="tamil_nadu_map.png" alt="Tamil Nadu Map" class="da-map-img">
+              </div>
+            </div>
+          </div>
+
+          <!-- Indices Section -->
+          <div class="da-indices-section">
+            <h3 class="da-indices-title">Indices</h3>
+            <div class="da-indices-grid">
+              <div class="da-index-card">
+                <span class="da-index-label">Development Index</span>
+                <span class="da-index-value" id="daValDev">0.76</span>
+                <span class="da-index-status" id="daStatDev">High</span>
+              </div>
+              <div class="da-index-card">
+                <span class="da-index-label">Growth Rate</span>
+                <span class="da-index-value" id="daValGrow">1.35%</span>
+                <span class="da-index-status" id="daStatGrow">Positive</span>
+              </div>
+              <div class="da-index-card">
+                <span class="da-index-label">Safety Index</span>
+                <span class="da-index-value" id="daValSafe">0.65</span>
+                <span class="da-index-status" id="daStatSafe">Medium</span>
+              </div>
+              <div class="da-index-card">
+                <span class="da-index-label">Environment Index</span>
+                <span class="da-index-value" id="daValEnv">0.68</span>
+                <span class="da-index-status" id="daStatEnv">Good</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Report Button -->
+          <button class="da-full-report-btn">View Full Report</button>
+        </div>
+      </section>
+
+      <!-- TAB: AI Predict (Interactive simulation) -->
+      <section class="tab-pane" id="tab-predict">
+        <div class="tab-header">
+          <h2>AI Predict Model</h2>
+          <p>Simulate future environmental and demographic outcomes based on key parameters.</p>
+        </div>
+
+        <div class="predict-container">
+          <div class="predict-settings">
+            <h3>Simulation Parameters</h3>
+            
+            <div class="param-group">
+              <label>Rainfall Variance (%)</label>
+              <div class="range-wrapper">
+                <input type="range" id="param-rain" min="-50" max="50" value="0">
+                <span class="param-val" id="val-rain">0%</span>
+              </div>
+            </div>
+
+            <div class="param-group">
+              <label>Industrial Growth Rate (%)</label>
+              <div class="range-wrapper">
+                <input type="range" id="param-industrial" min="0" max="15" value="5">
+                <span class="param-val" id="val-industrial">5%</span>
+              </div>
+            </div>
+
+            <div class="param-group">
+              <label>Afforestation Rate (%)</label>
+              <div class="range-wrapper">
+                <input type="range" id="param-trees" min="0" max="25" value="2">
+                <span class="param-val" id="val-trees">2%</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="runSimulationBtn">
+              <i data-lucide="play"></i> Run AI Simulation
+            </button>
+          </div>
+
+          <div class="predict-results">
+            <h3>Predicted Outcomes (2030)</h3>
+            <div class="results-grid">
+              <div class="result-item">
+                <div class="res-icon water-bg"><i data-lucide="droplet"></i></div>
+                <div class="res-info">
+                  <span class="res-title">Groundwater Level</span>
+                  <strong class="res-value" id="pred-groundwater">Sufficient</strong>
+                  <span class="res-change positive" id="change-groundwater">+3.2% vs current</span>
+                </div>
+              </div>
+
+              <div class="result-item">
+                <div class="res-icon agri-bg"><i data-lucide="sprout"></i></div>
+                <div class="res-info">
+                  <span class="res-title">Crop Yield Index</span>
+                  <strong class="res-value" id="pred-cropyield">High</strong>
+                  <span class="res-change positive" id="change-cropyield">+1.5% vs current</span>
+                </div>
+              </div>
+
+              <div class="result-item">
+                <div class="res-icon health-bg"><i data-lucide="activity"></i></div>
+                <div class="res-info">
+                  <span class="res-title">Air Quality Index (AQI)</span>
+                  <strong class="res-value" id="pred-aqi">Good (58)</strong>
+                  <span class="res-change negative" id="change-aqi">-4.1% degradation</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="forecast-chart-container">
+              <canvas id="forecastChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Reports (Data reports download) -->
+      <section class="tab-pane" id="tab-reports">
+        <div class="tab-header">
+          <h2>Analytical Reports</h2>
+          <p>Generate, schedule, or download municipal and district database reports.</p>
+        </div>
+
+        <div class="reports-section-wrapper">
+          <div class="report-filters">
+            <div class="custom-select-wrapper">
+              <select id="reportDistrictSelect">
+                <option value="all">All Tamil Nadu</option>
+                <option value="ariyalur">Ariyalur</option>
+                <option value="chengalpattu">Chengalpattu</option>
+                <option value="chennai">Chennai</option>
+                <option value="coimbatore" selected>Coimbatore</option>
+                <option value="cuddalore">Cuddalore</option>
+                <option value="dharmapuri">Dharmapuri</option>
+                <option value="dindigul">Dindigul</option>
+                <option value="erode">Erode</option>
+                <option value="kallakurichi">Kallakurichi</option>
+                <option value="kanchipuram">Kanchipuram</option>
+                <option value="kanyakumari">Kanyakumari</option>
+                <option value="karur">Karur</option>
+                <option value="krishnagiri">Krishnagiri</option>
+                <option value="madurai">Madurai</option>
+                <option value="mayiladuthurai">Mayiladuthurai</option>
+                <option value="nagapattinam">Nagapattinam</option>
+                <option value="namakkal">Namakkal</option>
+                <option value="nilgiris">Nilgiris</option>
+                <option value="perambalur">Perambalur</option>
+                <option value="pudukkottai">Pudukkottai</option>
+                <option value="ramanathapuram">Ramanathapuram</option>
+                <option value="ranipet">Ranipet</option>
+                <option value="salem">Salem</option>
+                <option value="sivaganga">Sivaganga</option>
+                <option value="tenkasi">Tenkasi</option>
+                <option value="thanjavur">Thanjavur</option>
+                <option value="theni">Theni</option>
+                <option value="thoothukudi">Thoothukudi</option>
+                <option value="tiruchirappalli">Tiruchirappalli</option>
+                <option value="tirunelveli">Tirunelveli</option>
+                <option value="tirupattur">Tirupattur</option>
+                <option value="tiruppur">Tiruppur</option>
+                <option value="tiruvallur">Tiruvallur</option>
+                <option value="tiruvannamalai">Tiruvannamalai</option>
+                <option value="tiruvarur">Tiruvarur</option>
+                <option value="vellore">Vellore</option>
+                <option value="viluppuram">Viluppuram</option>
+                <option value="virudhunagar">Virudhunagar</option>
+              </select>
+              <i data-lucide="chevron-down" class="select-chevron"></i>
+            </div>
+            <div class="custom-select-wrapper">
+              <select id="reportTypeSelect">
+                <option value="annual">Annual Smart City Overview</option>
+                <option value="water">Water Resources Report</option>
+                <option value="agriculture">Agriculture & Rainfall Report</option>
+                <option value="demographics">Demographic Survey 2026</option>
+              </select>
+              <i data-lucide="chevron-down" class="select-chevron"></i>
+            </div>
+            <button class="btn btn-primary" id="generateReportBtn">
+              <i data-lucide="refresh-cw" class="btn-spinner-icon"></i> Generate Report
+            </button>
+          </div>
+
+          <div class="report-results-table-container">
+            <table class="report-table" id="reportTable">
+              <thead>
+                <tr>
+                  <th>Report Name</th>
+                  <th>District</th>
+                  <th>Created Date</th>
+                  <th>Status</th>
+                  <th>Format</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Coimbatore Water Resources Annual Survey</td>
+                  <td>Coimbatore</td>
+                  <td>2026-05-18</td>
+                  <td><span class="status-badge success">Ready</span></td>
+                  <td>PDF / CSV</td>
+                  <td>
+                    <button class="table-action-btn" title="Download Report"><i data-lucide="download"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Chennai Population & Traffic Impact Audit</td>
+                  <td>Chennai</td>
+                  <td>2026-05-12</td>
+                  <td><span class="status-badge success">Ready</span></td>
+                  <td>PDF</td>
+                  <td>
+                    <button class="table-action-btn" title="Download Report"><i data-lucide="download"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Salem Crop Production Metrics</td>
+                  <td>Salem</td>
+                  <td>2026-05-02</td>
+                  <td><span class="status-badge success">Ready</span></td>
+                  <td>CSV</td>
+                  <td>
+                    <button class="table-action-btn" title="Download Report"><i data-lucide="download"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Profile -->
+      <section class="tab-pane" id="tab-profile">
+        <div class="tab-header">
+          <h2>User Profile</h2>
+          <p>Manage your account settings, data preferences, and notifications.</p>
+        </div>
+
+        <div class="profile-container">
+          <div class="profile-card">
+            <div class="profile-main">
+              <div class="profile-avatar-container">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80" alt="User Profile" class="profile-avatar">
+                <button class="avatar-edit-btn"><i data-lucide="camera"></i></button>
+              </div>
+              <div class="profile-user-info">
+                <h3>User Name</h3>
+                <p>Lead Analytics Officer, TNSDA</p>
+                <span class="badge">Super Admin</span>
+              </div>
+            </div>
+
+            <div class="profile-settings-list">
+              <div class="settings-group">
+                <h4>System Configuration</h4>
+                <div class="setting-row">
+                  <div class="setting-info">
+                    <h5>Dark Mode</h5>
+                    <p>Toggle high-contrast dark theme</p>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <label for="darkModeToggle"></label>
+                  </div>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-info">
+                    <h5>Push Notifications</h5>
+                    <p>Receive immediate alerts for critical water/traffic spikes</p>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="pushNotiToggle" checked>
+                    <label for="pushNotiToggle"></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h4>Regional Settings</h4>
+                <div class="setting-row">
+                  <div class="setting-info">
+                    <h5>Default Region</h5>
+                    <p>Set primary monitoring district</p>
+                  </div>
+                  <div class="setting-control">
+                    <select class="settings-select">
+                      <option value="coimbatore">Coimbatore</option>
+                      <option value="chennai">Chennai</option>
+                      <option value="madurai">Madurai</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: TN Map -->
+      <section class="tab-pane" id="tab-tnmap" style="background: #f8fafc; min-height: 100vh; padding: 0;">
+        <div class="map-view-header" style="background: white; padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 10;">
+          <button onclick="switchTab('home')" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: #064e3b; padding: 4px;">
+            <i data-lucide="arrow-left" style="width: 24px; height: 24px;"></i>
+          </button>
+          <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: #064e3b; margin: 0; text-align: center; flex: 1;">Tamil Nadu Map</h2>
+          <button style="background: none; border: none; cursor: pointer; color: #064e3b; padding: 4px;">
+            <i data-lucide="filter" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+
+        <div style="padding: 1.2rem; max-width: 600px; margin: 0 auto;">
+          <!-- Indicator Selector Dropdown -->
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; font-family: 'Outfit', sans-serif; font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 0.4rem;">Select Indicator</label>
+            <div class="custom-select-wrapper" style="position: relative; border: 1px solid #e2e8f0; border-radius: 12px; background: white; padding: 0.85rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); box-sizing: border-box;">
+              <select id="mapIndicatorSelect" style="width: 100%; border: none; background: transparent; font-family: 'Outfit', sans-serif; font-size: 0.95rem; color: #0f172a; font-weight: 600; appearance: none; outline: none; cursor: pointer;">
+                <option value="population" selected>Population</option>
+                <option value="density">Population Density</option>
+              </select>
+              <i data-lucide="chevron-down" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #64748b; pointer-events: none;"></i>
+            </div>
+          </div>
+
+          <!-- SVG Map Card with Legend -->
+          <div style="background: white; border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.2rem; position: relative;">
+            
+            <div class="svg-map-wrapper" style="background: none; border: none; padding: 0; margin-bottom: 0; display: flex; justify-content: center; position: relative;">
+              <svg viewBox="0 0 500 700" class="tn-svg-map" style="max-width: 100%; height: auto; width: 100%;">
+                <!-- Proper Tamil Nadu District Map - All 38 Districts -->
+                <!-- Northern Districts -->
+                <path d="M 255,32 L 275,28 L 290,35 L 300,48 L 295,62 L 280,68 L 262,60 L 250,45 Z" class="map-district-path" data-district="tiruvallur" id="map-tiruvallur"></path>
+                <path d="M 300,48 L 320,42 L 338,52 L 335,72 L 322,78 L 310,75 L 295,62 Z" class="map-district-path" data-district="chennai" id="map-chennai"></path>
+                <path d="M 262,60 L 280,68 L 295,62 L 310,75 L 305,92 L 285,98 L 268,90 L 255,78 Z" class="map-district-path" data-district="kanchipuram" id="map-kanchipuram"></path>
+                <path d="M 305,92 L 322,78 L 340,85 L 345,105 L 330,115 L 310,108 L 295,100 Z" class="map-district-path" data-district="chengalpattu" id="map-chengalpattu"></path>
+                
+                <!-- Ranipet, Vellore, Tirupattur, Tiruvannamalai -->
+                <path d="M 195,48 L 220,35 L 255,32 L 250,45 L 262,60 L 240,72 L 218,65 L 200,58 Z" class="map-district-path" data-district="ranipet" id="map-ranipet"></path>
+                <path d="M 155,55 L 195,48 L 200,58 L 218,65 L 210,82 L 185,90 L 165,80 L 150,68 Z" class="map-district-path" data-district="vellore" id="map-vellore"></path>
+                <path d="M 135,42 L 155,55 L 150,68 L 165,80 L 155,95 L 130,90 L 118,72 L 125,52 Z" class="map-district-path" data-district="tirupattur" id="map-tirupattur"></path>
+                <path d="M 210,82 L 240,72 L 255,78 L 268,90 L 260,110 L 235,118 L 210,110 L 195,98 Z" class="map-district-path" data-district="tiruvannamalai" id="map-tiruvannamalai"></path>
+                
+                <!-- Krishnagiri, Dharmapuri -->
+                <path d="M 100,55 L 135,42 L 125,52 L 118,72 L 130,90 L 115,105 L 95,95 L 85,75 Z" class="map-district-path" data-district="krishnagiri" id="map-krishnagiri"></path>
+                <path d="M 85,75 L 95,95 L 115,105 L 130,90 L 155,95 L 152,115 L 130,128 L 105,120 L 90,105 Z" class="map-district-path" data-district="dharmapuri" id="map-dharmapuri"></path>
+                
+                <!-- Salem, Namakkal -->
+                <path d="M 90,105 L 105,120 L 130,128 L 152,115 L 155,95 L 185,90 L 195,98 L 190,120 L 165,140 L 135,148 L 108,140 Z" class="map-district-path" data-district="salem" id="map-salem"></path>
+                <path d="M 108,140 L 135,148 L 165,140 L 170,158 L 150,172 L 125,170 L 110,158 Z" class="map-district-path" data-district="namakkal" id="map-namakkal"></path>
+                
+                <!-- Erode, Tiruppur, Coimbatore, Nilgiris -->
+                <path d="M 62,105 L 90,105 L 108,140 L 110,158 L 90,168 L 68,160 L 55,140 L 50,120 Z" class="map-district-path" data-district="erode" id="map-erode"></path>
+                <path d="M 50,120 L 55,140 L 68,160 L 90,168 L 85,188 L 62,195 L 42,185 L 35,165 L 38,145 Z" class="map-district-path" data-district="tiruppur" id="map-tiruppur"></path>
+                <path d="M 22,155 L 38,145 L 35,165 L 42,185 L 62,195 L 58,218 L 35,225 L 18,212 L 10,190 L 12,170 Z" class="map-district-path" data-district="coimbatore" id="map-coimbatore"></path>
+                <path d="M 30,108 L 62,105 L 50,120 L 38,145 L 22,155 L 12,140 L 18,118 Z" class="map-district-path" data-district="nilgiris" id="map-nilgiris"></path>
+                
+                <!-- Villupuram, Kallakurichi, Cuddalore -->
+                <path d="M 235,118 L 260,110 L 285,98 L 295,100 L 290,125 L 270,140 L 245,145 L 225,135 Z" class="map-district-path" data-district="viluppuram" id="map-viluppuram"></path>
+                <path d="M 190,120 L 225,135 L 245,145 L 240,165 L 215,175 L 195,165 L 185,145 L 170,158 L 165,140 Z" class="map-district-path" data-district="kallakurichi" id="map-kallakurichi"></path>
+                <path d="M 270,140 L 290,125 L 310,108 L 330,115 L 340,135 L 335,158 L 315,170 L 290,168 L 265,160 Z" class="map-district-path" data-district="cuddalore" id="map-cuddalore"></path>
+                
+                <!-- Perambalur, Ariyalur -->
+                <path d="M 150,172 L 170,158 L 185,145 L 195,165 L 215,175 L 210,195 L 185,200 L 162,192 Z" class="map-district-path" data-district="perambalur" id="map-perambalur"></path>
+                <path d="M 215,175 L 240,165 L 265,160 L 270,180 L 255,200 L 230,205 L 210,195 Z" class="map-district-path" data-district="ariyalur" id="map-ariyalur"></path>
+                
+                <!-- Karur, Tiruchirappalli (Trichy) -->
+                <path d="M 110,158 L 125,170 L 150,172 L 162,192 L 148,210 L 120,208 L 100,195 L 95,178 Z" class="map-district-path" data-district="karur" id="map-karur"></path>
+                <path d="M 148,210 L 162,192 L 185,200 L 210,195 L 230,205 L 235,225 L 215,240 L 190,242 L 165,235 L 150,225 Z" class="map-district-path" data-district="trichy" id="map-trichy"></path>
+                
+                <!-- Thanjavur, Tiruvarur, Nagapattinam, Mayiladuthurai -->
+                <path d="M 235,225 L 255,200 L 270,180 L 290,168 L 315,170 L 310,195 L 295,215 L 275,228 L 258,235 Z" class="map-district-path" data-district="mayiladuthurai" id="map-mayiladuthurai"></path>
+                <path d="M 215,240 L 235,225 L 258,235 L 275,228 L 280,248 L 265,268 L 240,275 L 220,265 Z" class="map-district-path" data-district="thanjavur" id="map-thanjavur"></path>
+                <path d="M 275,228 L 295,215 L 310,195 L 335,158 L 350,170 L 345,200 L 330,225 L 310,242 L 290,248 Z" class="map-district-path" data-district="nagapattinam" id="map-nagapattinam"></path>
+                <path d="M 240,275 L 265,268 L 280,248 L 290,248 L 310,242 L 315,262 L 300,280 L 275,290 L 250,285 Z" class="map-district-path" data-district="tiruvarur" id="map-tiruvarur"></path>
+                
+                <!-- Dindigul, Sivaganga, Pudukkottai -->
+                <path d="M 85,188 L 90,168 L 110,158 L 95,178 L 100,195 L 120,208 L 148,210 L 150,225 L 135,248 L 110,252 L 88,240 L 75,218 Z" class="map-district-path" data-district="dindigul" id="map-dindigul"></path>
+                <path d="M 150,225 L 165,235 L 190,242 L 215,240 L 220,265 L 240,275 L 235,295 L 210,305 L 185,298 L 165,280 L 155,260 Z" class="map-district-path" data-district="pudukkottai" id="map-pudukkottai"></path>
+                <path d="M 135,248 L 155,260 L 165,280 L 185,298 L 175,318 L 150,325 L 128,315 L 115,295 L 112,270 Z" class="map-district-path" data-district="sivaganga" id="map-sivaganga"></path>
+                
+                <!-- Madurai, Theni, Idukki border -->
+                <path d="M 58,218 L 75,218 L 88,240 L 110,252 L 135,248 L 112,270 L 95,282 L 72,275 L 52,258 L 45,238 Z" class="map-district-path" data-district="madurai" id="map-madurai"></path>
+                <path d="M 18,212 L 35,225 L 58,218 L 45,238 L 52,258 L 38,268 L 20,260 L 8,242 L 5,225 Z" class="map-district-path" data-district="theni" id="map-theni"></path>
+                
+                <!-- Virudhunagar, Ramanathapuram -->
+                <path d="M 52,258 L 72,275 L 95,282 L 115,295 L 128,315 L 118,335 L 95,340 L 72,330 L 55,310 L 48,288 Z" class="map-district-path" data-district="virudhunagar" id="map-virudhunagar"></path>
+                <path d="M 128,315 L 150,325 L 175,318 L 185,298 L 210,305 L 235,295 L 250,285 L 275,290 L 280,310 L 268,335 L 240,348 L 210,350 L 185,345 L 160,338 L 140,335 Z" class="map-district-path" data-district="ramanathapuram" id="map-ramanathapuram"></path>
+                
+                <!-- Tenkasi, Tirunelveli, Thoothukudi, Kanyakumari -->
+                <path d="M 38,268 L 52,258 L 48,288 L 55,310 L 45,328 L 28,325 L 15,308 L 12,288 Z" class="map-district-path" data-district="tenkasi" id="map-tenkasi"></path>
+                <path d="M 55,310 L 72,330 L 95,340 L 118,335 L 115,358 L 95,375 L 68,378 L 48,365 L 38,345 L 45,328 Z" class="map-district-path" data-district="tirunelveli" id="map-tirunelveli"></path>
+                <path d="M 95,340 L 118,335 L 140,335 L 160,338 L 185,345 L 175,368 L 148,378 L 120,375 L 115,358 Z" class="map-district-path" data-district="thoothukudi" id="map-thoothukudi"></path>
+                <path d="M 48,365 L 68,378 L 95,375 L 115,358 L 120,375 L 110,398 L 88,410 L 65,405 L 48,392 L 42,380 Z" class="map-district-path" data-district="kanyakumari" id="map-kanyakumari"></path>
+                
+                <!-- Text Labels for all districts -->
+                <text x="270" y="43" class="map-label" data-district="tiruvallur" style="font-size:6px">Thiruvallur</text>
+                <text x="322" y="62" class="map-label" data-district="chennai" style="font-size:6px">Chennai</text>
+                <text x="275" y="82" class="map-label" data-district="kanchipuram" style="font-size:5.5px">Kancheepuram</text>
+                <text x="322" y="100" class="map-label" data-district="chengalpattu" style="font-size:5.5px">Chengalpattu</text>
+                <text x="218" y="55" class="map-label" data-district="ranipet" style="font-size:6px">Ranipet</text>
+                <text x="170" y="72" class="map-label" data-district="vellore" style="font-size:6px">Vellore</text>
+                <text x="132" y="72" class="map-label" data-district="tirupattur" style="font-size:5.5px">Tirupattur</text>
+                <text x="228" y="100" class="map-label" data-district="tiruvannamalai" style="font-size:5px">Tiruvannamalai</text>
+                <text x="100" y="82" class="map-label" data-district="krishnagiri" style="font-size:5.5px">Krishnagiri</text>
+                <text x="115" y="112" class="map-label" data-district="dharmapuri" style="font-size:5.5px">Dharmapuri</text>
+                <text x="148" y="125" class="map-label" data-district="salem" style="font-size:7px">Salem</text>
+                <text x="132" y="162" class="map-label" data-district="namakkal" style="font-size:5.5px">Namakkal</text>
+                <text x="72" y="140" class="map-label" data-district="erode" style="font-size:6px">Erode</text>
+                <text x="58" y="175" class="map-label" data-district="tiruppur" style="font-size:5.5px">Tiruppur</text>
+                <text x="32" y="195" class="map-label" data-district="coimbatore" style="font-size:5.5px">Coimbatore</text>
+                <text x="32" y="128" class="map-label" data-district="nilgiris" style="font-size:5.5px">Nilgiris</text>
+                <text x="262" y="132" class="map-label" data-district="viluppuram" style="font-size:5.5px">Villupuram</text>
+                <text x="198" y="155" class="map-label" data-district="kallakurichi" style="font-size:5px">Kallakurichi</text>
+                <text x="308" y="145" class="map-label" data-district="cuddalore" style="font-size:5.5px">Cuddalore</text>
+                <text x="178" y="188" class="map-label" data-district="perambalur" style="font-size:5.5px">Perambalur</text>
+                <text x="238" y="188" class="map-label" data-district="ariyalur" style="font-size:5.5px">Ariyalur</text>
+                <text x="115" y="192" class="map-label" data-district="karur" style="font-size:6px">Karur</text>
+                <text x="185" y="222" class="map-label" data-district="trichy" style="font-size:7px">Trichy</text>
+                <text x="288" y="205" class="map-label" data-district="mayiladuthurai" style="font-size:4.5px">Mayiladuthurai</text>
+                <text x="245" y="255" class="map-label" data-district="thanjavur" style="font-size:6px">Thanjavur</text>
+                <text x="328" y="205" class="map-label" data-district="nagapattinam" style="font-size:4.5px">Nagapattinam</text>
+                <text x="268" y="282" class="map-label" data-district="tiruvarur" style="font-size:5.5px">Tiruvarur</text>
+                <text x="105" y="240" class="map-label" data-district="dindigul" style="font-size:6px">Dindigul</text>
+                <text x="190" y="275" class="map-label" data-district="pudukkottai" style="font-size:5px">Pudukkottai</text>
+                <text x="142" y="295" class="map-label" data-district="sivaganga" style="font-size:5.5px">Sivaganga</text>
+                <text x="72" y="255" class="map-label" data-district="madurai" style="font-size:6.5px">Madurai</text>
+                <text x="22" y="245" class="map-label" data-district="theni" style="font-size:6px">Theni</text>
+                <text x="78" y="312" class="map-label" data-district="virudhunagar" style="font-size:5px">Virudhunagar</text>
+                <text x="198" y="330" class="map-label" data-district="ramanathapuram" style="font-size:4.5px">Ramanathapuram</text>
+                <text x="25" y="300" class="map-label" data-district="tenkasi" style="font-size:5.5px">Tenkasi</text>
+                <text x="72" y="362" class="map-label" data-district="tirunelveli" style="font-size:5.5px">Tirunelveli</text>
+                <text x="138" y="358" class="map-label" data-district="thoothukudi" style="font-size:5px">Thoothukudi</text>
+                <text x="72" y="398" class="map-label" data-district="kanyakumari" style="font-size:5px">Kanyakumari</text>
+              </svg>
+              <div class="map-tooltip" id="mapTooltip" style="position: absolute; background-color: var(--bg-surface, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: 700; color: var(--text-primary, #0f172a); pointer-events: none; box-shadow: var(--shadow-md); opacity: 0; transition: opacity 0.15s ease; z-index: 10;">Hover over a district</div>
+            </div>
+
+            <!-- Legend Overlay inside the card (bottom-right) -->
+            <div style="position: absolute; bottom: 1.5rem; right: 1.5rem; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.92); padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); backdrop-filter: blur(8px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); width: 50px;">
+              <span style="font-family: 'Outfit', sans-serif; font-size: 0.7rem; font-weight: 800; color: #064e3b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">High</span>
+              <!-- Gradient Bar matching mockup -->
+              <div style="width: 12px; height: 70px; background: linear-gradient(to bottom, #064e3b, #0ea5e9, #a7f3d0); border-radius: 6px; border: 1px solid rgba(0,0,0,0.05);"></div>
+              <span style="font-family: 'Outfit', sans-serif; font-size: 0.7rem; font-weight: 800; color: #064e3b; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Low</span>
+            </div>
+          </div>
+
+          <!-- Bottom Card to show ONLY population (or selected indicator) of selected district -->
+          <div id="mapSelectionResultCard" style="background: white; border-radius: 16px; padding: 1.2rem; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: none; transform: translateY(10px); transition: all 0.3s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 id="selectedDistrictName" style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 800; color: #064e3b; margin: 0;">Coimbatore</h3>
+              <span id="selectedIndicatorLabel" style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 700; color: #064e3b; background: #e6f4ea; padding: 4px 10px; border-radius: 12px;">Population</span>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 0.4rem; margin-bottom: 1.2rem;">
+              <span id="selectedDistrictVal" style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: #0f172a; line-height: 1;">34.45 Lakh</span>
+            </div>
+            
+            <button id="viewFullAnalyticsBtn" style="width: 100%; background: #064e3b; color: white; border: none; padding: 0.8rem; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(6,78,59,0.2); transition: all 0.2s;">
+              View Full Analytics <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+            </button>
+          </div>
+
+          <!-- Prompt if nothing is selected -->
+          <div id="mapSelectionPrompt" style="background: white; border-radius: 16px; padding: 1.5rem; text-align: center; border: 1.5px dashed #cbd5e1; color: #64748b; font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 500;">
+            Click a district on the map to show population details.
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB: Temple Crowd Analytics -->
+      <section class="tab-pane" id="tab-temple">
+        <div class="tab-header">
+          <h2>Temple Crowd Analytics</h2>
+          <p>Live footfall, queue wait times, and security parameters across major temples.</p>
+        </div>
+        
+        <div class="temple-dashboard-grid">
+          <div class="temple-selector-card">
+            <h3>Select Temple</h3>
+            <div class="temple-buttons-list">
+              <button class="temple-opt-btn active" data-temple="meenakshi">Madurai Meenakshi Temple</button>
+              <button class="temple-opt-btn" data-temple="srirangam">Srirangam Ranganathaswamy</button>
+              <button class="temple-opt-btn" data-temple="palani">Palani Dhandayuthapani</button>
+              <button class="temple-opt-btn" data-temple="brihadeeswarar">Thanjavur Brihadeeswarar</button>
+            </div>
+          </div>
+          
+          <div class="temple-details-panel">
+            <div class="temple-panel-header">
+              <h3 id="templeName">Madurai Meenakshi Amman Temple</h3>
+              <span class="status-badge success" id="templeStatus">Normal Crowd</span>
+            </div>
+            
+            <div class="temple-metrics-row">
+              <div class="temple-metric-box">
+                <span class="t-metric-lbl">Live Crowd Count</span>
+                <strong class="t-metric-val" id="templeCrowdCount">14,250</strong>
+              </div>
+              <div class="temple-metric-box">
+                <span class="t-metric-lbl">Dharma Darshan Q-Time</span>
+                <strong class="t-metric-val" id="templeDharmaTime">120 Mins</strong>
+              </div>
+              <div class="temple-metric-box">
+                <span class="t-metric-lbl">Special Darshan Q-Time</span>
+                <strong class="t-metric-val" id="templeSpecialTime">30 Mins</strong>
+              </div>
+              <div class="temple-metric-box">
+                <span class="t-metric-lbl">Security Checkpoint</span>
+                <strong class="t-metric-val" id="templeSecurity">Green (Fast)</strong>
+              </div>
+            </div>
+            
+            <div class="temple-charts-section">
+              <div class="temple-chart-container">
+                <canvas id="templeCrowdChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Jallikattu Live Dashboard -->
+      <section class="tab-pane" id="tab-jallikattu">
+        <div class="tab-header">
+          <h2>Jallikattu Live Event Center</h2>
+          <p>Live metrics from the traditional bull taming events across Tamil Nadu.</p>
+        </div>
+        
+        <div class="jallikattu-grid">
+          <div class="jallikattu-status-card">
+            <div class="jallikattu-header">
+              <h3>Active Arena: Alanganallur</h3>
+              <span class="live-indicator"><span class="live-dot"></span> LIVE</span>
+            </div>
+            
+            <div class="jallikattu-stats-grid">
+              <div class="jalli-stat-box">
+                <div class="jalli-icon-wrapper water-bg">
+                  <i data-lucide="shield-alert" class="jalli-icon"></i>
+                </div>
+                <div>
+                  <span>Bulls Released</span>
+                  <strong id="jalliBullsCount">312</strong>
+                </div>
+              </div>
+              <div class="jalli-stat-box">
+                <div class="jalli-icon-wrapper pop-bg">
+                  <i data-lucide="users" class="jalli-icon"></i>
+                </div>
+                <div>
+                  <span>Tamers Active</span>
+                  <strong id="jalliTamersCount">480</strong>
+                </div>
+              </div>
+              <div class="jalli-stat-box">
+                <div class="jalli-icon-wrapper edu-bg">
+                  <i data-lucide="award" class="jalli-icon"></i>
+                </div>
+                <div>
+                  <span>Top Bull</span>
+                  <strong id="jalliTopBull">#108 'Karuppan'</strong>
+                </div>
+              </div>
+              <div class="jalli-stat-box">
+                <div class="jalli-icon-wrapper health-bg">
+                  <i data-lucide="heart" class="jalli-icon"></i>
+                </div>
+                <div>
+                  <span>Safety Rating</span>
+                  <strong id="jalliSafetyRating">94% (High)</strong>
+                </div>
+              </div>
+            </div>
+            
+            <div class="jalli-tamer-board">
+              <h4>Top Tamers Leaderboard</h4>
+              <ol class="tamer-list" id="jalliTamerList">
+                <li><span>1. Karthik (Madurai)</span> <strong>9 Bulls</strong></li>
+                <li><span>2. Vignesh (Trichy)</span> <strong>7 Bulls</strong></li>
+                <li><span>3. Selvam (Salem)</span> <strong>6 Bulls</strong></li>
+              </ol>
+            </div>
+          </div>
+          
+          <div class="jallikattu-feed-card">
+            <h3>Live Arena Feed Log</h3>
+            <div class="jalli-feed-logs" id="jalliFeedLogs">
+              <div class="feed-log-item"><span class="feed-time">12:35</span> <p>Bull #124 'Veeran' successfully crossed the Vaadivaasal untamed.</p></div>
+              <div class="feed-log-item success"><span class="feed-time">12:38</span> <p>Tamer Karthik tamed Bull #88, scoring his 9th taming point.</p></div>
+              <div class="feed-log-item info"><span class="feed-time">12:40</span> <p>Next round of 50 tamers entering the arena checkpoint.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Disaster Alert Center -->
+      <section class="tab-pane" id="tab-disaster">
+        <div class="tab-header">
+          <h2>Disaster Alert & Helpline Center</h2>
+          <p>Emergency warning monitoring systems and direct helpline integration.</p>
+        </div>
+        
+        <div class="disaster-container">
+          <div class="disaster-alerts-list">
+            <h3>Active Weather Advisory</h3>
+            <div class="disaster-alert-card danger">
+              <div class="alert-header">
+                <h4>ORANGE ALERT: Heavy Rainfall Warning</h4>
+                <span class="alert-badge">Active</span>
+              </div>
+              <p>Regional Met Center predicts extremely heavy rain (11-20 cm) in coastal Tamil Nadu over the next 24 hours. Fisherman are advised not to venture into sea.</p>
+              <div class="alert-affected">
+                <strong>Affected Regions:</strong> Chennai, Tiruvallur, Kanchipuram
+              </div>
+            </div>
+            
+            <div class="disaster-alert-card warning">
+              <div class="alert-header">
+                <h4>YELLOW ALERT: Reservoir Outflow Discharge</h4>
+                <span class="alert-badge">Monitoring</span>
+              </div>
+              <p>Mettur Reservoir outflow increased to 8,000 cusecs due to heavy inflow from Karnataka catchment areas. Low-lying riverbanks are on notice.</p>
+            </div>
+          </div>
+          
+          <div class="disaster-actions-card">
+            <h3>Emergency Action Center</h3>
+            <div class="helpline-grid">
+              <a href="tel:1070" class="helpline-btn danger-btn">
+                <i data-lucide="phone"></i>
+                <div>
+                  <strong>1070</strong>
+                  <span>State Emergency Response</span>
+                </div>
+              </a>
+              <a href="tel:1077" class="helpline-btn warning-btn">
+                <i data-lucide="phone"></i>
+                <div>
+                  <strong>1077</strong>
+                  <span>District Collectorate</span>
+                </div>
+              </a>
+              <a href="tel:108" class="helpline-btn info-btn">
+                <i data-lucide="phone-call"></i>
+                <div>
+                  <strong>108</strong>
+                  <span>Medical & Ambulance</span>
+                </div>
+              </a>
+              <a href="tel:101" class="helpline-btn success-btn">
+                <i data-lucide="shield"></i>
+                <div>
+                  <strong>101</strong>
+                  <span>Fire & Rescue</span>
+                </div>
+              </a>
+            </div>
+            
+            <div class="preparedness-check">
+              <h4>Safety & Evacuation Guidelines</h4>
+              <ul>
+                <li><i data-lucide="check-circle"></i> Keep emergency lights and phone power-banks fully charged.</li>
+                <li><i data-lucide="check-circle"></i> Store sufficient dry rations, clean drinking water, and first aid supplies.</li>
+                <li><i data-lucide="check-circle"></i> Identify the nearest government cyclone/flood relief shelter.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    
+      </main>
+
+    <!-- Bottom Navigation Bar (Mobile only) -->
+    <nav class="bottom-nav mobile-only">
+      <button class="nav-btn active" data-tab="home">
+        <i data-lucide="home"></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" data-tab="districts">
+        <i data-lucide="map-pin"></i>
+        <span>Districts</span>
+      </button>
+      <button class="nav-btn" data-tab="predict">
+        <i data-lucide="cpu"></i>
+        <span>AI Predict</span>
+      </button>
+      <button class="nav-btn" data-tab="reports">
+        <i data-lucide="file-text"></i>
+        <span>Reports</span>
+      </button>
+      <button class="nav-btn" data-tab="profile">
+        <i data-lucide="user"></i>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Modal: More Options Popup -->
+  <div class="modal-overlay" id="moreOptionsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Tamil Nadu Special Modules</h2>
+        <button class="modal-close-btn" id="closeMoreModalBtn" aria-label="Close Modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-grid">
+        <button class="modal-option-card" data-tab-link="tnmap">
+          <div class="modal-option-icon map-icon-bg">
+            <i data-lucide="map"></i>
+          </div>
+          <div class="modal-option-details">
+            <h3>Tamil Nadu Map</h3>
+            <p>Interactive district vector map and regional filters.</p>
+          </div>
+        </button>
+        
+        <button class="modal-option-card" data-tab-link="temple">
+          <div class="modal-option-icon temple-icon-bg">
+            <i data-lucide="landmark"></i>
+          </div>
+          <div class="modal-option-details">
+            <h3>Temple Crowd Analytics</h3>
+            <p>Live queue wait times and peak hour visitor streams.</p>
+          </div>
+        </button>
+        
+        <button class="modal-option-card" data-tab-link="jallikattu">
+          <div class="modal-option-icon jallikattu-icon-bg">
+            <i data-lucide="award"></i>
+          </div>
+          <div class="modal-option-details">
+            <h3>Jallikattu Live Dashboard</h3>
+            <p>Event registrations, tamer tallies, and safety monitors.</p>
+          </div>
+        </button>
+        
+        <button class="modal-option-card" data-tab-link="disaster">
+          <div class="modal-option-icon disaster-icon-bg">
+            <i data-lucide="cloud-lightning"></i>
+          </div>
+          <div class="modal-option-details">
+            <h3>Disaster Alert Center</h3>
+            <p>Cyclone warnings, rain alerts, and emergency contact portal.</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  LOCATION SERVICES MODAL                                     -->
+  <!-- ============================================================ -->
+  <div id="locationServicesModal" style="display: none; position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); align-items: flex-end; justify-content: center;">
+    <div style="background: white; border-radius: 24px 24px 0 0; padding: 2rem 1.5rem 2.5rem; width: 100%; max-width: 480px; animation: slideUpModal 0.35s cubic-bezier(0.4,0,0.2,1);">
+      <!-- Handle Bar -->
+      <div style="width: 40px; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 0 auto 1.5rem;"></div>
+      
+      <!-- Location Icon -->
+      <div style="width: 72px; height: 72px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
+        </svg>
+      </div>
+      
+      <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800; color: #0f172a; text-align: center; margin-bottom: 0.5rem;">Turn On Location Services</h2>
+      <p style="font-family: 'Outfit', sans-serif; font-size: 0.88rem; color: #64748b; text-align: center; margin-bottom: 1.8rem; line-height: 1.6;">
+        Allow <strong style="color: #0f172a;">TN Analytics</strong> to access your location to show real-time traffic and accurate navigation directions.
+      </p>
+      
+      <!-- Permission Steps -->
+      <div style="background: #f8fafc; border-radius: 14px; padding: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.75rem;">
+          <div style="width: 28px; height: 28px; background: #dbeafe; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: #374151; font-weight: 600;">Find your precise location</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.75rem;">
+          <div style="width: 28px; height: 28px; background: #dcfce7; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: #374151; font-weight: 600;">Show live traffic along your route</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 28px; height: 28px; background: #fef3c7; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: #374151; font-weight: 600;">Faster, smarter navigation</span>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <button id="allowLocationBtn" onclick="enableLocationAndNavigate()" style="width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 0.9rem; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; margin-bottom: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 14px rgba(59,130,246,0.35);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Allow Location Access
+      </button>
+      <button onclick="closeLocationModal()" style="width: 100%; background: transparent; color: #64748b; border: 1.5px solid #e2e8f0; padding: 0.8rem; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer;">
+        Not Now
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  NAVIGATION VIEW SCREEN (Full Screen Overlay)                -->
+  <!-- ============================================================ -->
+  <div id="navigationScreen" style="display: none; position: fixed; inset: 0; z-index: 8500; background: #0f172a; flex-direction: column;">
+    <!-- Nav Header -->
+    <div style="background: #1e293b; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; position: relative; z-index: 10;">
+      <button onclick="closeNavigationScreen()" style="background: rgba(255,255,255,0.08); border: none; border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      </button>
+      <div style="flex: 1; min-width: 0;">
+        <p style="font-family: 'Outfit', sans-serif; font-size: 0.72rem; color: #94a3b8; margin: 0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Navigating to</p>
+        <p id="navDestinationLabel" style="font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: white; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Destination</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.4rem; background: #ef4444; padding: 4px 10px; border-radius: 20px;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: white; animation: navPulse 1.2s infinite;"></div>
+        <span style="font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 700; color: white;">LIVE</span>
+      </div>
+    </div>
+
+    <!-- Map Canvas Area -->
+    <div style="flex: 1; position: relative; overflow: hidden; background: #1a2744;">
+      <!-- SVG Map Simulation with traffic route lines -->
+      <svg id="navMapSvg" width="100%" height="100%" viewBox="0 0 380 380" style="position: absolute; inset: 0;">
+        <!-- Background grid (simulated roads) -->
+        <defs>
+          <pattern id="roadGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#243158" stroke-width="0.5"/>
+          </pattern>
+          <!-- Red glow filter for heavy traffic -->
+          <filter id="redGlow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- Yellow glow filter for moderate traffic -->
+          <filter id="yellowGlow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        
+        <!-- Map background -->
+        <rect width="380" height="380" fill="#1a2744"/>
+        <rect width="380" height="380" fill="url(#roadGrid)"/>
+        
+        <!-- Background city roads (subtle) -->
+        <line x1="0" y1="120" x2="380" y2="120" stroke="#243158" stroke-width="6"/>
+        <line x1="0" y1="200" x2="380" y2="200" stroke="#243158" stroke-width="6"/>
+        <line x1="0" y1="280" x2="380" y2="280" stroke="#243158" stroke-width="6"/>
+        <line x1="80" y1="0" x2="80" y2="380" stroke="#243158" stroke-width="5"/>
+        <line x1="190" y1="0" x2="190" y2="380" stroke="#243158" stroke-width="5"/>
+        <line x1="300" y1="0" x2="300" y2="380" stroke="#243158" stroke-width="5"/>
+        <!-- Diagonal road -->
+        <line x1="0" y1="60" x2="380" y2="330" stroke="#1e2f55" stroke-width="4"/>
+        
+        <!-- ======== ROUTE LINE ======== -->
+        <!-- Segment 1: Start → Junction 1 (YELLOW = moderate traffic) -->
+        <path d="M 50 330 Q 80 310 110 280 Q 130 250 150 220" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#yellowGlow)" opacity="0.9"/>
+        <!-- Segment 2: Junction 1 → Junction 2 (RED = heavy traffic) -->
+        <path d="M 150 220 Q 165 190 180 160 Q 195 140 210 120" stroke="#ef4444" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#redGlow)" opacity="0.9"/>
+        <!-- Segment 3: Junction 2 → Junction 3 (YELLOW = moderate) -->
+        <path d="M 210 120 Q 230 100 255 88 Q 275 78 295 68" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#yellowGlow)" opacity="0.9"/>
+        <!-- Segment 4: Junction 3 → End (GREEN = clear) -->
+        <path d="M 295 68 Q 315 55 330 48" stroke="#10b981" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+        
+        <!-- Route outline (shadow beneath) -->
+        <path d="M 50 330 Q 80 310 110 280 Q 130 250 150 220 Q 165 190 180 160 Q 195 140 210 120 Q 230 100 255 88 Q 275 78 295 68 Q 315 55 330 48" stroke="rgba(0,0,0,0.4)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Route on top of shadow -->
+        <path d="M 50 330 Q 80 310 110 280 Q 130 250 150 220" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M 150 220 Q 165 190 180 160 Q 195 140 210 120" stroke="#ef4444" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M 210 120 Q 230 100 255 88 Q 275 78 295 68" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M 295 68 Q 315 55 330 48" stroke="#10b981" stroke-width="7" fill="none" stroke-linecap="round"/>
+        
+        <!-- Heavy traffic warning badge on route -->
+        <rect x="163" y="157" width="72" height="24" rx="12" fill="#ef4444"/>
+        <text x="199" y="173" font-size="9" font-family="sans-serif" font-weight="bold" fill="white" text-anchor="middle">⚠ Heavy Traffic</text>
+        
+        <!-- START POINT -->
+        <circle cx="50" cy="330" r="12" fill="#1e293b" stroke="#3b82f6" stroke-width="3"/>
+        <circle cx="50" cy="330" r="6" fill="#3b82f6"/>
+        <!-- START LABEL -->
+        <rect x="60" y="320" width="62" height="20" rx="6" fill="rgba(30,41,59,0.9)"/>
+        <text x="91" y="334" font-size="9" font-family="sans-serif" font-weight="bold" fill="#60a5fa" text-anchor="middle" id="navStartLabel">Your Location</text>
+        
+        <!-- END POINT (destination pin) -->
+        <circle cx="330" cy="48" r="14" fill="#ef4444" stroke="white" stroke-width="2.5"/>
+        <path d="M 326 44 Q 330 40 334 44 L 330 56 Z" fill="#ef4444"/>
+        <circle cx="330" cy="46" r="4" fill="white"/>
+        <!-- END LABEL -->
+        <rect x="240" y="30" width="82" height="20" rx="6" fill="rgba(30,41,59,0.9)"/>
+        <text x="281" y="44" font-size="9" font-family="sans-serif" font-weight="bold" fill="#f87171" text-anchor="middle" id="navEndLabel">Destination</text>
+        
+        <!-- Animated position dot on route -->
+        <circle id="navPositionDot" cx="100" cy="290" r="8" fill="#3b82f6" stroke="white" stroke-width="2.5">
+          <animate attributeName="r" values="8;11;8" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        
+        <!-- Traffic congestion markers -->
+        <circle cx="180" cy="160" r="5" fill="#ef4444" opacity="0.8"/>
+        <circle cx="195" cy="140" r="4" fill="#ef4444" opacity="0.7"/>
+        <circle cx="160" cy="185" r="4" fill="#f59e0b" opacity="0.8"/>
+        <circle cx="240" cy="92" r="4" fill="#f59e0b" opacity="0.7"/>
+      </svg>
+
+      <!-- Compass -->
+      <div style="position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; background: rgba(30,41,59,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.1);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.5 7.5L22 12l-6.5 2.5L12 22l-3.5-7.5L2 12l6.5-2.5Z" fill="none" stroke="white" stroke-width="1.5"/><path d="M12 2l3.5 7.5L12 12" fill="#ef4444" opacity="0.8"/></svg>
+      </div>
+
+      <!-- My location button -->
+      <div style="position: absolute; bottom: 12px; right: 12px; width: 42px; height: 42px; background: rgba(30,41,59,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.1); cursor: pointer;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Info Panel -->
+    <div style="background: #1e293b; border-radius: 20px 20px 0 0; padding: 1.2rem 1.2rem 1.5rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.4);">
+      <!-- ETA and distance row -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div>
+          <p id="navEtaTime" style="font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: white; margin: 0; line-height: 1;">28 min</p>
+          <p id="navRouteInfo" style="font-family: 'Outfit', sans-serif; font-size: 0.82rem; color: #64748b; margin: 2px 0 0; font-weight: 600;">15.4 km • Fastest route</p>
+        </div>
+        <div style="text-align: right;">
+          <div style="background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem; margin-bottom: 4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Heavy Traffic
+          </div>
+          <p style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: #475569; margin: 0; font-weight: 600;">+8 min delay</p>
+        </div>
+      </div>
+      
+      <!-- Next Instruction -->
+      <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 0.8rem 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.06);">
+        <div style="width: 36px; height: 36px; background: #3b82f6; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div>
+          <p style="font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700; color: white; margin: 0;">Continue on Anna Salai</p>
+          <p style="font-family: 'Outfit', sans-serif; font-size: 0.78rem; color: #64748b; margin: 2px 0 0;">For 2.1 km, then turn right</p>
+        </div>
+      </div>
+      
+      <!-- Traffic Legend -->
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <div style="width: 22px; height: 5px; background: #ef4444; border-radius: 3px;"></div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Heavy</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <div style="width: 22px; height: 5px; background: #f59e0b; border-radius: 3px;"></div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Moderate</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <div style="width: 22px; height: 5px; background: #10b981; border-radius: 3px;"></div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Clear</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main script -->
+  <script src="app.js"></script>
+
+  <style>
+    @keyframes slideUpModal {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes navPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+  </style>
+
+</body>
+</html>
